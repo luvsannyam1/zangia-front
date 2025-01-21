@@ -27,7 +27,6 @@ const StyledUserTab = styled.table`
     background-color: #007bff;
     color: white;
     text-transform: uppercase;
-    font-size: 14px;
   }
 
   tr:nth-child(even) {
@@ -39,14 +38,12 @@ const StyledUserTab = styled.table`
   }
 
   td {
-    font-size: 14px;
     color: #333;
   }
 `
 
 const UserTabTitle = styled.h2`
   text-align: center;
-  font-size: 24px;
   color: #333;
   margin: 20px 0;
 `
@@ -54,7 +51,6 @@ const UserTabTitle = styled.h2`
 const ActionButton = styled.button`
   margin: 0 5px;
   padding: 5px 10px;
-  font-size: 14px;
   cursor: pointer;
 `
 
@@ -153,7 +149,6 @@ const UserTab = () => {
   return (
     <UserTabContainer>
       <UserTabTitle>Хэрэглэгчид</UserTabTitle>
-      <ActionButton onClick={handleCreate}>Шинээр үүсгэх</ActionButton>
       <StyledUserTab>
         <thead>
           <tr>
@@ -161,7 +156,6 @@ const UserTab = () => {
             <th>Name</th>
             <th>Email</th>
             <th>Role</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -171,24 +165,10 @@ const UserTab = () => {
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.role}</td>
-              <td>
-                <ActionButton onClick={() => handleEdit(user._id)}>Засах</ActionButton>
-                <ActionButton onClick={() => handleDelete(user._id)}>Устгах</ActionButton>
-              </td>
             </tr>
           ))}
         </tbody>
       </StyledUserTab>
-
-      {showDeleteModal && (
-        <Modal>
-          <ModalContent>
-            <p>Are you sure you want to delete this user?</p>
-            <ActionButton onClick={confirmDelete}>Yes</ActionButton>
-            <ActionButton onClick={cancelDelete}>No</ActionButton>
-          </ModalContent>
-        </Modal>
-      )}
 
       {showCreateModal && (
         <Modal>
@@ -215,8 +195,6 @@ const UserTab = () => {
               value={newUser.role}
               onChange={handleCreateChange}
             />
-            <ActionButton onClick={confirmCreate}>Шинээр үүсгэх</ActionButton>
-            <ActionButton onClick={cancelCreate}>Cancel</ActionButton>
           </ModalContent>
         </Modal>
       )}

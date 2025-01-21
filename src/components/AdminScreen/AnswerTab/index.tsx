@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import api from '../../../interceptor/interceptor'
 
-const CirriculumTabContainer = styled.div`
+const AnswerTabContainer = styled.div`
   margin: 20px auto;
   width: 90%;
   overflow-x: auto;
@@ -11,7 +11,7 @@ const CirriculumTabContainer = styled.div`
   background: #fff;
 `
 
-const StyledCirriculumTab = styled.table`
+const StyledAnswerTab = styled.table`
   width: 100%;
   border-collapse: collapse;
   font-family: Arial, sans-serif;
@@ -42,7 +42,7 @@ const StyledCirriculumTab = styled.table`
   }
 `
 
-const CirriculumTabTitle = styled.h2`
+const AnswerTabTitle = styled.h2`
   text-align: center;
   color: #333;
   margin: 20px 0;
@@ -102,55 +102,53 @@ const Subtitle = styled.h3`
   color: black;
 `
 
-const CirriculumTab = () => {
-  const [cirriculums, setCirriculums] = useState<any[]>([])
+const AnswerTab = () => {
+  const [answers, setAnswers] = useState<any[]>([])
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showCreateModal, setShowCreateModal] = useState(false)
-  const [selectedCirriculumId, setSelectedCirriculumId] = useState<string | null>(null)
-  const [newCirriculum, setNewCirriculum] = useState({ title: '', description: '' })
+  const [selectedAnswerId, setSelectedAnswerId] = useState<string | null>(null)
+  const [newAnswer, setNewAnswer] = useState({ title: '', description: '' })
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
 
   useEffect(() => {
-    const fetchCirriculums = async () => {
+    const fetchAnswers = async () => {
       try {
-        const response = await api.cirriculum.get()
-        setCirriculums(response.data.data)
+        const response = await api.answer.get()
+        setAnswers(response.data.data)
       } catch (error) {
-        console.error('Failed to fetch cirriculums:', error)
+        console.error('Failed to fetch answers:', error)
       }
     }
 
-    fetchCirriculums()
+    fetchAnswers()
   }, [])
 
   const handleEdit = (id: string) => {
     // Handle edit action
-    console.log(`Edit cirriculum with ID: ${id}`)
+    console.log(`Edit answer with ID: ${id}`)
   }
 
   const handleDelete = (id: string) => {
-    setSelectedCirriculumId(id)
+    setSelectedAnswerId(id)
     setShowDeleteModal(true)
   }
 
   const confirmDelete = async () => {
-    if (selectedCirriculumId) {
+    if (selectedAnswerId) {
       try {
-        await api.cirriculum.delete(selectedCirriculumId)
-        setCirriculums(
-          cirriculums.filter((cirriculum) => cirriculum._id !== selectedCirriculumId)
-        )
+        await api.answer.delete(selectedAnswerId)
+        setAnswers(answers.filter((answer) => answer._id !== selectedAnswerId))
       } catch (error) {
-        console.error('Failed to delete cirriculum:', error)
+        console.error('Failed to delete answer:', error)
       }
       setShowDeleteModal(false)
-      setSelectedCirriculumId(null)
+      setSelectedAnswerId(null)
     }
   }
 
   const cancelDelete = () => {
     setShowDeleteModal(false)
-    setSelectedCirriculumId(null)
+    setSelectedAnswerId(null)
   }
 
   const handleCreate = () => {
@@ -159,42 +157,42 @@ const CirriculumTab = () => {
 
   const handleCreateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setNewCirriculum((prevState) => ({ ...prevState, [name]: value }))
+    setNewAnswer((prevState) => ({ ...prevState, [name]: value }))
   }
 
   const confirmCreate = async () => {
     try {
-      const response = await api.cirriculum.create(newCirriculum)
-      setCirriculums([...cirriculums, response.data])
+      const response = await api.answer.create(newAnswer)
+      setAnswers([...answers, response.data])
     } catch (error) {
-      console.error('Failed to create cirriculum:', error)
+      console.error('Failed to create answer:', error)
     }
     setShowCreateModal(false)
-    setNewCirriculum({ title: '', description: '' })
+    setNewAnswer({ title: '', description: '' })
   }
 
   const cancelCreate = () => {
     setShowCreateModal(false)
-    setNewCirriculum({ title: '', description: '' })
+    setNewAnswer({ title: '', description: '' })
   }
 
   const handleEditChange = (id: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setCirriculums((prevState) =>
-      prevState.map((cirriculum) =>
-        cirriculum._id === id ? { ...cirriculum, [name]: value } : cirriculum
+    setAnswers((prevState) =>
+      prevState.map((answer) =>
+        answer._id === id ? { ...answer, [name]: value } : answer
       )
     )
   }
 
   const saveEdit = async (id: string) => {
-    const cirriculumToUpdate = cirriculums.find((cirriculum) => cirriculum._id === id)
-    if (cirriculumToUpdate) {
+    const answerToUpdate = answers.find((answer) => answer._id === id)
+    if (answerToUpdate) {
       try {
-        await api.cirriculum.update(id, cirriculumToUpdate)
-        console.log('Cirriculum updated successfully')
+        await api.answer.update(id, answerToUpdate)
+        console.log('Answer updated successfully')
       } catch (error) {
-        console.error('Failed to update cirriculum:', error)
+        console.error('Failed to update answer:', error)
       }
     }
   }
@@ -212,57 +210,46 @@ const CirriculumTab = () => {
   }
 
   return (
-    <CirriculumTabContainer>
-      <CirriculumTabTitle>Сургалтын хөтөлбөрүүд</CirriculumTabTitle>
+    <AnswerTabContainer>
+      <AnswerTabTitle>Хариултын сан</AnswerTabTitle>
       <ActionButton onClick={handleCreate}>Create</ActionButton>
-      <StyledCirriculumTab>
+      <StyledAnswerTab>
         <thead>
           <tr>
-            <th>Title</th>
             <th>Description</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {cirriculums.map((cirriculum) => (
-            <React.Fragment key={cirriculum._id}>
-              <tr onClick={() => toggleRow(cirriculum._id)}>
-                <td>{cirriculum.title}</td>
-                <td>{cirriculum.description}</td>
+          {answers.map((answer) => (
+            <React.Fragment key={answer._id}>
+              <tr onClick={() => toggleRow(answer._id)}>
+                <td>{answer.description}</td>
                 <td>
-                  <ActionButton onClick={() => handleEdit(cirriculum._id)}>
+                  <ActionButton onClick={() => handleEdit(answer._id)}>
                     Засах
                   </ActionButton>
-                  <ActionButton onClick={() => handleDelete(cirriculum._id)}>
+                  <ActionButton onClick={() => handleDelete(answer._id)}>
                     Устгах
                   </ActionButton>
                 </td>
               </tr>
-              {expandedRows.has(cirriculum._id) && (
+              {expandedRows.has(answer._id) && (
                 <CollapsibleContent>
-                  <Subtitle>Гарчиг</Subtitle>
-                  <input
-                    type="text"
-                    name="title"
-                    value={cirriculum.title}
-                    onChange={(e) => handleEditChange(cirriculum._id, e)}
-                  />
-                  <Subtitle>Тайлбар</Subtitle>
+                  <Subtitle>Хариулт</Subtitle>
                   <input
                     type="text"
                     name="description"
-                    value={cirriculum.description}
-                    onChange={(e) => handleEditChange(cirriculum._id, e)}
+                    value={answer.description}
+                    onChange={(e) => handleEditChange(answer._id, e)}
                   />
-                  <ActionButton onClick={() => saveEdit(cirriculum._id)}>
-                    Save
-                  </ActionButton>
+                  <ActionButton onClick={() => saveEdit(answer._id)}>Save</ActionButton>
                 </CollapsibleContent>
               )}
             </React.Fragment>
           ))}
         </tbody>
-      </StyledCirriculumTab>
+      </StyledAnswerTab>
 
       {showDeleteModal && (
         <Modal>
@@ -277,19 +264,13 @@ const CirriculumTab = () => {
       {showCreateModal && (
         <Modal>
           <ModalContent>
-            <h2>Create Cirriculum</h2>
-            <input
-              type="text"
-              name="title"
-              placeholder="Title"
-              value={newCirriculum.title}
-              onChange={handleCreateChange}
-            />
+            <Subtitle>Create Answer</Subtitle>
+
             <input
               type="text"
               name="description"
               placeholder="Description"
-              value={newCirriculum.description}
+              value={newAnswer.description}
               onChange={handleCreateChange}
             />
             <ActionButton onClick={confirmCreate}>Create</ActionButton>
@@ -297,8 +278,8 @@ const CirriculumTab = () => {
           </ModalContent>
         </Modal>
       )}
-    </CirriculumTabContainer>
+    </AnswerTabContainer>
   )
 }
 
-export default CirriculumTab
+export default AnswerTab

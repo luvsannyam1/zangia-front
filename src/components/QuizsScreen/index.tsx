@@ -7,6 +7,7 @@ import {
   HighlightedText,
   LogoContainer,
   PageCenter,
+  SelectButton,
 } from '../../styles/Global'
 import { ScreenTypes } from '../../types'
 import api from '../../interceptor/interceptor'
@@ -15,7 +16,6 @@ import Button from '../ui/Button'
 import { useEffect, useState } from 'react'
 
 const Heading = styled.h2`
-  font-size: 32px;
   font-weight: 700;
   margin-bottom: 20px;
   text-align: center;
@@ -23,7 +23,6 @@ const Heading = styled.h2`
 
 const DetailText = styled.p`
   font-weight: 500;
-  font-size: 20px;
   line-height: 29px;
   text-align: center;
 `
@@ -43,37 +42,10 @@ const SelectButtonContainer = styled.div`
   }
 `
 
-interface SelectButtonProps {
-  active: boolean
-  disabled?: boolean
-}
-
-const SelectButton = styled.div<SelectButtonProps>`
-  background-color: ${({ disabled, theme }) =>
-    disabled ? `${theme.colors.disabledCard}` : `${theme.colors.selectTopicBg}`};
-  border: ${({ active, theme }) =>
-    active
-      ? `2px solid ${theme.colors.themeColor}`
-      : `1px solid ${theme.colors.disabledButton}`};
-  transition: background-color 0.4s ease-out;
-  border-radius: 10px;
-  padding: 14px 10px;
-  display: flex;
-  align-items: center;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  @media ${device.md} {
-    padding: 10px;
-    tap-highlight-color: transparent;
-    -webkit-tap-highlight-color: transparent;
-  }
-`
-
 const SelectButtonText = styled.span`
-  font-size: 18px;
   font-weight: 600;
   margin-left: 10px;
   @media ${device.md} {
-    font-size: 16px;
     font-weight: 500;
   }
 `

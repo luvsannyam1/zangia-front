@@ -26,7 +26,6 @@ const AnswersContainer = styled.div`
 `
 
 const QuestionStyle = styled.h2`
-  font-size: clamp(18px, 4vw, 28px);
   font-weight: 500;
   margin-bottom: 25px;
   color: ${({ theme }) => theme.colors.primaryText};
@@ -34,18 +33,20 @@ const QuestionStyle = styled.h2`
 `
 
 interface QuestionTypes {
+  id: string
   question: string
   code?: string
-  image?: string | null
+  imgUrls: string[]
   answers: QuizAnswer[]
   selectedAnswer: QuestionAnswer[]
   handleAnswerSelection: (answer: string) => void
 }
 
 const Question: FC<QuestionTypes> = ({
+  id,
   question,
   code,
-  image,
+  imgUrls,
   answers,
   selectedAnswer,
   handleAnswerSelection,
@@ -54,10 +55,13 @@ const Question: FC<QuestionTypes> = ({
     <QuestionContainer>
       <QuestionStyle>{question}</QuestionStyle>
       {code && <CodeSnippet code={code} language="javascript" />}
-      {image && <QuizImage image={image} />}
+
+      {imgUrls?.length !== 0 &&
+        imgUrls.map((url, index) => <QuizImage key={index} image={url} />)}
       <AnswersContainer>
         {answers.map((choice, index) => (
           <Answer
+            id={id}
             answer={choice}
             index={index}
             key={index}

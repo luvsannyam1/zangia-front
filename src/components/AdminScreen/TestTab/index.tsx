@@ -27,7 +27,6 @@ const StyledTestTab = styled.table`
     background-color: #007bff;
     color: white;
     text-transform: uppercase;
-    font-size: 14px;
   }
 
   tr:nth-child(even) {
@@ -39,14 +38,16 @@ const StyledTestTab = styled.table`
   }
 
   td {
-    font-size: 14px;
     color: #333;
   }
 `
 
+const Subtitle = styled.h3`
+  color: black;
+`
+
 const TestTabTitle = styled.h2`
   text-align: center;
-  font-size: 24px;
   color: #333;
   margin: 20px 0;
 `
@@ -54,7 +55,6 @@ const TestTabTitle = styled.h2`
 const ActionButton = styled.button`
   margin: 0 5px;
   padding: 5px 10px;
-  font-size: 14px;
   cursor: pointer;
   border: 1px solid #007bff;
   border-radius: 4px;
@@ -326,21 +326,21 @@ const TestTab = () => {
                 <tr>
                   <td colSpan={3}>
                     <CollapsibleContent>
-                      <h3>Гарчиг</h3>
+                      <Subtitle>Гарчиг</Subtitle>
                       <input
                         type="text"
                         name="title"
                         value={test.title}
                         onChange={(e) => handleEditChange(test._id, e)}
                       />
-                      <h3>Тайлбар</h3>
+                      <Subtitle>Тайлбар</Subtitle>
                       <input
                         type="text"
                         name="description"
                         value={test.description}
                         onChange={(e) => handleEditChange(test._id, e)}
                       />
-                      <h3>Хичээл</h3>
+                      <Subtitle>Хичээл</Subtitle>
                       <select
                         name="cirriculumId"
                         value={test.cirriculumId}
@@ -353,7 +353,7 @@ const TestTab = () => {
                           </option>
                         ))}
                       </select>
-                      <h3>Асуултууд</h3>
+                      <Subtitle>Асуултууд</Subtitle>
                       <input
                         type="text"
                         placeholder="Асуултаа хайх"
@@ -436,7 +436,7 @@ const TestTab = () => {
                 </option>
               ))}
             </select>
-            <h3>Асуултууд</h3>
+            <Subtitle>Асуултууд</Subtitle>
             <input
               type="text"
               placeholder="Асуултаа хайх"

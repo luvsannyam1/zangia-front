@@ -4,6 +4,8 @@ import UserTab from './UserTab'
 import CirriculumTab from './CirriculumTab'
 import TestTab from './TestTab'
 import QuestionnaireTab from './QuestionsTab'
+import AnswerTab from './AnswerTab'
+import ExamTab from './Exams'
 
 const AdminPage = styled.div`
   font-family: Arial, sans-serif;
@@ -21,7 +23,6 @@ const CenterCardContainer = styled.div`
 
 const AppTitle = styled.h2`
   text-align: center;
-  font-size: 24px;
   margin: 20px 0;
 `
 
@@ -38,7 +39,6 @@ const TabButton = styled.button<{ active: boolean }>`
   cursor: pointer;
   padding: 14px 16px;
   transition: background-color 0.3s;
-  font-size: 17px;
 
   color: ${({ theme }) => theme.colors.themeColor};
 
@@ -67,6 +67,8 @@ const AdminScreen = () => {
     { label: 'Хичээлүүд', content: <CirriculumTab /> },
     { label: 'Шалгалтууд', content: <TestTab /> },
     { label: 'Асуултын сан', content: <QuestionnaireTab /> },
+    { label: 'Хариултын сан', content: <AnswerTab /> },
+    { label: 'Дүнгийн жагсаалт', content: <ExamTab /> },
   ]
 
   return (

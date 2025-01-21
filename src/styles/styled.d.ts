@@ -9,6 +9,7 @@ export interface Theme {
     themeGradient: string
     background: string
     cardBackground: string
+    outerBackground: string
     selectTopicBg: string
     appLogo: string
     buttonText: string

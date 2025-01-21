@@ -18,6 +18,8 @@ const QuizProvider = ({ children }: QuizProviderProps) => {
     initialState.currentScreen
   )
 
+  const [resultData, setResultData] = useState<any>(initialState.resultData)
+
   const [questions, setQuestions] = useState<QuizQuestion[]>([])
 
   const [questionAnswer, setAnswer] = useState<QuestionAnswer[]>([])
@@ -42,6 +44,10 @@ const QuizProvider = ({ children }: QuizProviderProps) => {
     setAnswer(newQuestionAnswer)
   }
 
+  const setQuestionAnswers = (answers: QuestionAnswer[]) => {
+    setAnswer(answers)
+  }
+
   useEffect(() => {
     quizDetail && setQuestions(quizDetail.testQuestions)
   }, [quizDetail])
@@ -49,6 +55,7 @@ const QuizProvider = ({ children }: QuizProviderProps) => {
   const quizContextValue: QuizContextTypes = {
     questionAnswer,
     setQuestionAnswer,
+    setQuestionAnswers,
     quiz,
     setQuiz,
     currentScreen,
@@ -65,6 +72,8 @@ const QuizProvider = ({ children }: QuizProviderProps) => {
     setEndTime,
     quizDetail,
     setQuizDetail,
+    resultData,
+    setResultData,
   }
 
   return <QuizContext.Provider value={quizContextValue}>{children}</QuizContext.Provider>

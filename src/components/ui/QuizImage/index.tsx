@@ -13,8 +13,16 @@ const ImageStyle = styled.img`
   margin-bottom: 20px;
 `
 
-const QuizImage: FC<QuizImageProps> = ({ image }) => (
-  <ImageStyle src={image} alt="picture quiz" />
-)
-
+const QuizImage: FC<QuizImageProps> = ({ image }) => {
+  const imgUrls = image.split('.')[1]
+  if (imgUrls === 'mp4') {
+    return (
+      <video width="400" controls>
+        <source src={'http://localhost:8000/server' + image} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    )
+  }
+  return <ImageStyle src={'http://localhost:8000/server' + image} alt="picture quiz" />
+}
 export default QuizImage

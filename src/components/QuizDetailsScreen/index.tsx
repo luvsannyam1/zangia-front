@@ -14,12 +14,10 @@ import { convertSeconds } from '../../utils/helpers'
 
 const AppTitle = styled.h2`
   font-weight: 700;
-  font-size: 32px;
   color: ${({ theme }) => theme.colors.themeColor};
 `
 
 const DetailTextContainer = styled.div`
-  font-size: 20px;
   font-weight: 500;
   margin-top: 15px;
   margin-bottom: 40px;
@@ -28,7 +26,6 @@ const DetailTextContainer = styled.div`
 `
 
 const DetailText = styled.p`
-  font-size: 20px;
   font-weight: 500;
   margin-top: 15px;
   line-height: 1.3;

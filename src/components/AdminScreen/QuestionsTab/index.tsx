@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import api from '../../../interceptor/interceptor'
+import FileUploader from '../../ui/FileUploader'
+import QuizImage from '../../ui/QuizImage'
 
 const QuestionsTabContainer = styled.div`
   margin: 20px auto;
@@ -27,7 +29,6 @@ const StyledQuestionsTab = styled.table`
     background-color: #007bff;
     color: white;
     text-transform: uppercase;
-    font-size: 14px;
   }
 
   tr:nth-child(even) {
@@ -39,14 +40,16 @@ const StyledQuestionsTab = styled.table`
   }
 
   td {
-    font-size: 14px;
     color: #333;
   }
 `
 
+const Subtitle = styled.h3`
+  color: black;
+`
+
 const QuestionsTabTitle = styled.h2`
   text-align: center;
-  font-size: 24px;
   color: #333;
   margin: 20px 0;
 `
@@ -54,7 +57,6 @@ const QuestionsTabTitle = styled.h2`
 const ActionButton = styled.button`
   margin: 0 5px;
   padding: 5px 10px;
-  font-size: 14px;
   cursor: pointer;
   border: 1px solid #007bff;
   border-radius: 4px;
@@ -231,13 +233,13 @@ const QuestionsTab = () => {
     setSearchQuery(e.target.value)
   }
 
-  const toggleQuestionCreation = (testId: string, questionId: string) => {
+  const toggleAsnwerCreation = (answerId: string) => {
     setNewQuestionnaire((test) => {
       return {
         ...test,
-        testQuestions: test?.answers?.includes(questionId)
-          ? test.answers.filter((q: any) => q !== questionId)
-          : [...test.answers, questionId],
+        answers: test.answers?.includes(answerId)
+          ? test.answers.filter((q: string) => q !== answerId)
+          : [...test.answers, answerId],
       }
     })
   }
@@ -245,12 +247,27 @@ const QuestionsTab = () => {
   const toggleAnswer = (questionnaireId: string, answerId: string) => {
     setQuestionnaires((prevState) =>
       prevState.map((questionnaire) =>
-        questionnaire._id === questionnaireId
+        questionnaire._id === questionnaireId && questionnaire.answers.length <= 5
           ? {
               ...questionnaire,
               answers: questionnaire.answers.includes(answerId)
                 ? questionnaire.answers.filter((a: any) => a !== answerId)
                 : [...questionnaire.answers, answerId],
+            }
+          : questionnaire
+      )
+    )
+  }
+
+  const toggleImages = (questionnaireId: string, imageUrl: string) => {
+    setQuestionnaires((prevState) =>
+      prevState.map((questionnaire) =>
+        questionnaire._id === questionnaireId
+          ? {
+              ...questionnaire,
+              imgUrls: questionnaire.imgUrls.includes(imageUrl)
+                ? questionnaire.imgUrls.filter((a: any) => a !== imageUrl)
+                : [...questionnaire.imgUrls, imageUrl],
             }
           : questionnaire
       )
@@ -290,21 +307,30 @@ const QuestionsTab = () => {
                 <tr>
                   <td colSpan={3}>
                     <CollapsibleContent>
-                      <h3>Асуулт</h3>
+                      <Subtitle>Асуулт</Subtitle>
                       <input
                         type="text"
                         name="question"
                         value={questionnaire.question}
                         onChange={(e) => handleEditChange(questionnaire._id, e)}
                       />
-                      <h3>Тайлбар</h3>
-                      <input
-                        type="text"
-                        name="description"
-                        value={questionnaire.description}
-                        onChange={(e) => handleEditChange(questionnaire._id, e)}
+                      <Subtitle>Зураг болон бичлэг</Subtitle>
+                      <FileUploader
+                        onUploadSuccess={(url) => {
+                          toggleImages(questionnaire._id, url)
+                        }}
                       />
-                      <h3>Хариултууд</h3>
+
+                      {questionnaire.imgUrls?.length !== 0 &&
+                        questionnaire.imgUrls.map((url: any, index: number) => (
+                          <div
+                            onClick={() => toggleImages(questionnaire._id, url)}
+                            key={index}
+                          >
+                            <QuizImage key={index} image={url} />
+                          </div>
+                        ))}
+                      <Subtitle>Хариултууд</Subtitle>
                       <input
                         type="text"
                         placeholder="Search answers"
@@ -329,8 +355,8 @@ const QuestionsTab = () => {
                                   }
                                 >
                                   {questionnaire.answers.includes(answer._id)
-                                    ? 'Remove'
-                                    : 'Add'}
+                                    ? 'Хасах'
+                                    : 'Нэмэх'}
                                 </ActionButton>
                               </td>
                             </tr>
@@ -338,7 +364,7 @@ const QuestionsTab = () => {
                         </tbody>
                       </table>
                       <ActionButton onClick={() => saveEdit(questionnaire._id)}>
-                        Save
+                        Хадгалах
                       </ActionButton>
                     </CollapsibleContent>
                   </td>
@@ -362,7 +388,7 @@ const QuestionsTab = () => {
       {showCreateModal && (
         <Modal>
           <ModalContent>
-            <h2>Create Questionnaire</h2>
+            <Subtitle>Create Questionnaire</Subtitle>
             <input
               type="text"
               name="question"
@@ -370,14 +396,7 @@ const QuestionsTab = () => {
               value={newQuestionnaire.question}
               onChange={handleCreateChange}
             />
-            <input
-              type="text"
-              name="description"
-              placeholder="Description"
-              value={newQuestionnaire.description}
-              onChange={handleCreateChange}
-            />
-            <h3>Хариултууд</h3>
+            <Subtitle>Хариултууд</Subtitle>
             <input
               type="text"
               placeholder="Search answers"
@@ -396,12 +415,10 @@ const QuestionsTab = () => {
                   <tr key={answer._id}>
                     <td>{answer.description}</td>
                     <td>
-                      <ActionButton
-                        onClick={() =>
-                          toggleQuestionCreation(newQuestionnaire._id, answer._id)
-                        }
-                      >
-                        {newQuestionnaire.answers.includes(answer._id) ? 'Remove' : 'Add'}
+                      <ActionButton onClick={() => toggleAsnwerCreation(answer._id)}>
+                        {newQuestionnaire.answers.includes(answer._id)
+                          ? 'Хасах'
+                          : 'Нэмэх'}
                       </ActionButton>
                     </td>
                   </tr>

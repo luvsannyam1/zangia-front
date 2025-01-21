@@ -76,6 +76,9 @@ const api = {
     get: () => apiClient.get('/cirriculum'),
     delete: (id: string) => apiClient.delete(`/cirriculum/${id}`),
   },
+  exam: {
+    get: () => apiClient.get('/exam/'),
+  },
   uploadImage: (formData: any) =>
     apiClient.post('/upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },

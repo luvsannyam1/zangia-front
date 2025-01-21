@@ -27,7 +27,6 @@ const ModalContent = styled.div`
 `
 
 const ModalTitle = styled.h6`
-  font-size: clamp(24px, 4vw, 32px);
   font-weight: 700;
   color: ${({ theme }) => theme.colors.themeColor};
   margin-top: 26px;
@@ -35,8 +34,6 @@ const ModalTitle = styled.h6`
 `
 
 const ModalSubtitle = styled.p`
-  font-size: 24px;
-  font-size: clamp(18px, 4vw, 24px);
   font-weight: 500;
   text-align: center;
   line-height: 1.3;

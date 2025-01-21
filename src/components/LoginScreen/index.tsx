@@ -12,16 +12,14 @@ import {
 import { ScreenTypes } from '../../types'
 
 import Button from '../ui/Button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-const AppTitle = styled.h2`
+const AppTitle = styled.h3`
   font-weight: 700;
-  font-size: 32px;
   color: ${({ theme }) => theme.colors.themeColor};
 `
 
 const DetailTextContainer = styled.div`
-  font-size: 20px;
   font-weight: 500;
   margin-top: 15px;
   text-align: left;
@@ -31,7 +29,6 @@ const DetailTextContainer = styled.div`
 `
 
 const DetailText = styled.p`
-  font-size: 20px;
   font-weight: 500;
   margin-top: 15px;
   line-height: 1.3;
@@ -39,22 +36,7 @@ const DetailText = styled.p`
   display: flex;
   flex-direction: column;
 `
-const StyledInput = styled.input`
-  font-size: 20px;
-  font-weight: 500;
-  margin-top: 15px;
-  line-height: 1.3;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 400px;
-  box-sizing: border-box;
-
-  &:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-`
+const StyledInput = styled.input``
 const ButtonGroup = styled.div`
   width: 600px;
   display: flex;
@@ -74,6 +56,20 @@ const LoginScreen = () => {
   const goToRegisterScreen = () => {
     setCurrentScreen(ScreenTypes.RegisterScreen)
   }
+  useEffect(() => {
+    try {
+      api.user.getMe().then((res) => {
+        localStorage.setItem('role', res.data.user.role)
+
+        if (res.status === 200) {
+          goToQuestionScreen()
+        }
+      })
+    } catch (error) {
+      setCurrentScreen(ScreenTypes.LoginScreen)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleSubmit = async () => {
     try {
@@ -83,6 +79,10 @@ const LoginScreen = () => {
       })
 
       localStorage.setItem('token', response.data.access_token)
+
+      api.user.getMe().then((res) => {
+        localStorage.setItem('role', res.data.user.role)
+      })
 
       goToQuestionScreen()
     } catch (error) {

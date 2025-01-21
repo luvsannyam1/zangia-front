@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react'
-import { Question, QuizQuestion } from '../models'
+import { QuizQuestion } from '../models'
 
 export enum ScreenTypes {
   SplashScreen,
@@ -13,7 +13,7 @@ export enum ScreenTypes {
   AdminScreen,
 }
 
-export interface Result extends Question {
+export interface Result extends QuizQuestion {
   selectedAnswer: string[]
   isMatch: boolean
 }
@@ -21,6 +21,7 @@ export interface Result extends Question {
 export type QuizContextTypes = {
   questionAnswer: QuestionAnswer[]
   setQuestionAnswer: (type: QuestionAnswer) => void
+  setQuestionAnswers: (type: QuestionAnswer[]) => void
   quiz: QuizQuestion[]
   setQuiz: (type: QuizQuestion[]) => void
   currentScreen: ScreenTypes
@@ -37,6 +38,9 @@ export type QuizContextTypes = {
   setEndTime: (type: number) => void
   quizDetail: any
   setQuizDetail: (type: any) => void
+
+  resultData: any
+  setResultData: (type: any) => void
 }
 
 export type QuestionAnswer = {

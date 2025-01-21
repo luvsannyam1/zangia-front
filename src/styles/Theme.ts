@@ -3,19 +3,20 @@ import { Theme } from './styled'
 export const themes: Record<string, Theme> = {
   light: {
     colors: {
-      primaryText: '#11052C', // question text color
-      secondaryText: '#2D264B', // answer text color
+      outerBackground: '#010409',
+      primaryText: '#ffffff', // question text color
+      secondaryText: '#edeced', // answer text color
       themeText: '#000000',
-      themeColor: '#0e050e',
+      themeColor: '#ffffff',
       themeGradient: '#ffffff',
-      background: '#E5E5E5',
-      cardBackground: '#FFFFFF',
-      selectTopicBg: '#FFFFFF',
+      background: '#151b23',
+      cardBackground: '#151b23',
+      selectTopicBg: '#151b23',
       appLogo: '#000000',
       buttonText: '#FFFFFF',
       outlineButtonText: '#800080',
-      buttonBackground: '#800080',
-      selectedAnswer: '#FFD6FF',
+      buttonBackground: '#3685f3',
+      selectedAnswer: '#262c36',
       infoText: '#FF783F', // skip tag text
       infoBackground: '#ffb23f26', // skip tag background
       border: '#EAEAEA',
@@ -48,6 +49,7 @@ export const themes: Record<string, Theme> = {
   },
   dark: {
     colors: {
+      outerBackground: '#010409',
       primaryText: '#FFFFFF', // question text color
       secondaryText: '#FFFFFF', // answer text color
       themeText: '#FFFFFF',

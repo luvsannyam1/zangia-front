@@ -14,7 +14,6 @@ import { useState } from 'react'
 
 const AppTitle = styled.h2`
   font-weight: 700;
-  font-size: 32px;
   color: ${({ theme }) => theme.colors.themeColor};
 `
 
@@ -31,7 +30,6 @@ const LabelText = styled(HighlightedText)`
 `
 
 const StyledInput = styled.input`
-  font-size: 20px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;

@@ -4,6 +4,7 @@ import { QuizContextTypes, ScreenTypes } from '../types'
 export const initialState: QuizContextTypes = {
   questionAnswer: [],
   setQuestionAnswer: () => {},
+  setQuestionAnswers: () => {},
   quiz: [],
   setQuiz: () => {},
   currentScreen: ScreenTypes.SplashScreen,
@@ -20,6 +21,8 @@ export const initialState: QuizContextTypes = {
   setEndTime: () => {},
   quizDetail: {},
   setQuizDetail: () => {},
+  resultData: {},
+  setResultData: () => {},
 }
 
 export const QuizContext = createContext<QuizContextTypes>(initialState)

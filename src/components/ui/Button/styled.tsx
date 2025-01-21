@@ -12,15 +12,13 @@ export const ButtonStyle = styled.button.attrs(({ outline, bold, big }: ButtonTy
   big,
 }))`
   width: 195px;
-  min-height: 50px;
+  min-height: 26.4px;
   color: ${({ theme, outline }) =>
     outline ? theme.colors.outlineButtonText : theme.colors.buttonText};
   background: ${({ theme, outline }) =>
     outline ? theme.colors.cardBackground : theme.colors.buttonBackground};
-  font-size: clamp(16px, 5vw, 24px);
   border: 1px solid
     ${({ theme, outline }) => (!outline ? 'none' : theme.colors.themeColor)};
-  font-weight: ${({ bold }) => (bold ? '700' : '400')};
   border-radius: 9px;
   display: flex;
   justify-content: center;
@@ -31,7 +29,6 @@ export const ButtonStyle = styled.button.attrs(({ outline, bold, big }: ButtonTy
     tap-highlight-color: transparent;
     -webkit-tap-highlight-color: transparent;
   }
-
   &:active {
     transform: scale(0.98);
     box-shadow: ${({ theme }) => theme.shadows.activeButton};

@@ -74,16 +74,18 @@ const QuestionScreen: FC = () => {
   const {
     questionAnswer,
     setQuestionAnswer,
+    setQuestionAnswers,
     questions,
     quizDetail,
     result,
     setResult,
     setCurrentScreen,
+    setResultData,
   } = useQuiz()
 
   const currentQuestion = questions[activeQuestion]
 
-  const { _id, question, answers, imageUrl, correctAnswer } = currentQuestion
+  const { _id, question, answers, imgUrls, correctAnswer } = currentQuestion
 
   const onClickNext = () => {
     const isMatch: boolean = selectedAnswer.every((answer) => correctAnswer === answer)
@@ -94,14 +96,14 @@ const QuestionScreen: FC = () => {
       setActiveQuestion((prev) => prev + 1)
     } else {
       setShowResultModal(true)
+      socket.emit('finishTest', {
+        answer: questionAnswer,
+      })
     }
     setSelectedAnswer([])
   }
 
   const handleModal = () => {
-    socket.emit('finishTest', {
-      answer: questionAnswer,
-    })
     setCurrentScreen(ScreenTypes.ResultScreen)
     document.body.style.overflow = 'auto'
   }
@@ -120,6 +122,9 @@ const QuestionScreen: FC = () => {
     // Listen for events
     socket.on('examStarted', (data) => {
       console.log(data)
+
+      setTime(data.test.timeRemaining)
+      setQuestionAnswers(data.answers)
     })
 
     socket.on('answerSubmitted', (data) => {
@@ -130,10 +135,14 @@ const QuestionScreen: FC = () => {
     socket.on('timerUpdate', ({ timeRemaining }) => {
       console.log(timeRemaining)
       setTime(timeRemaining)
+      if (timeRemaining === 0) {
+        setShowTimerModal(true)
+      }
     })
 
-    socket.on('examFinished', ({ message }) => {
-      setShowTimerModal(true)
+    socket.on('examFinished', ({ result }) => {
+      console.log('result : ', result)
+      setResultData(result)
     })
 
     socket.on('error', ({ message }) => {
@@ -172,9 +181,10 @@ const QuestionScreen: FC = () => {
           timer={time}
         />
         <Question
+          id={_id}
           question={question}
           code={''}
-          image={imageUrl}
+          imgUrls={imgUrls}
           answers={answers}
           handleAnswerSelection={submitAnswer}
           selectedAnswer={questionAnswer}
@@ -196,7 +206,7 @@ const QuestionScreen: FC = () => {
       {(showTimerModal || showResultModal) && (
         <ModalWrapper
           title={showResultModal ? 'Дууслаа!' : 'Цаг чинь дууслаа!'}
-          subtitle={`Та нийт ${result.length} асуултанд хариулсан байна.`}
+          subtitle={`Та нийт ${questionAnswer.length} асуултанд хариулсан байна.`}
           onClick={handleModal}
           icon={showResultModal ? <CheckIcon /> : <TimerIcon />}
           buttonTitle="Үр дүнг харах"
