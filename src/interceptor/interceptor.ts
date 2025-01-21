@@ -1,16 +1,15 @@
 import axios from 'axios'
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8000/server',
+  baseURL: '/server',
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
-let token = localStorage.getItem('token') // Or any other secure storage
-
 apiClient.interceptors.request.use(
   (config) => {
+    const token = localStorage.getItem('token') // Dynamically fetch token
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
@@ -29,8 +28,7 @@ apiClient.interceptors.response.use(
 
       try {
         await apiClient.get('/user/logout')
-        localStorage.removeItem('token')
-        window.location.href = '/login'
+        await localStorage.removeItem('token')
       } catch (logoutError) {
         return Promise.reject(logoutError)
       }

@@ -12,6 +12,7 @@ import LoginScreen from '../LoginScreen'
 import QuizsScreen from '../QuizsScreen'
 import RegisterScreen from '../RegisterScreen'
 import AdminScreen from '../AdminScreen'
+import Navbar from '../NavBarScreen'
 
 function Main() {
   const { currentScreen, setCurrentScreen } = useQuiz()
@@ -36,7 +37,12 @@ function Main() {
 
   const ComponentToRender = screenComponents[currentScreen] || <SplashScreen />
 
-  return <>{ComponentToRender}</>
+  return (
+    <>
+      <Navbar />
+      {ComponentToRender}
+    </>
+  )
 }
 
 export default Main

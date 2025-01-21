@@ -58,11 +58,11 @@ const LoginScreen = () => {
   }
   useEffect(() => {
     try {
-      api.user.getMe().then((res) => {
-        localStorage.setItem('role', res.data.user.role)
+      api.user.getMe().then(async (res) => {
+        await localStorage.setItem('role', res.data.user.role)
 
         if (res.status === 200) {
-          goToQuestionScreen()
+          await goToQuestionScreen()
         }
       })
     } catch (error) {
@@ -78,9 +78,9 @@ const LoginScreen = () => {
         password,
       })
 
-      localStorage.setItem('token', response.data.access_token)
+      await localStorage.setItem('token', response.data.access_token)
 
-      api.user.getMe().then((res) => {
+      await api.user.getMe().then((res) => {
         localStorage.setItem('role', res.data.user.role)
       })
 

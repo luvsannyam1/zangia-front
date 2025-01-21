@@ -18,11 +18,11 @@ const QuizImage: FC<QuizImageProps> = ({ image }) => {
   if (imgUrls === 'mp4') {
     return (
       <video width="400" controls>
-        <source src={'http://localhost:8000/server' + image} type="video/mp4" />
+        <source src={'/server' + image} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     )
   }
-  return <ImageStyle src={'http://localhost:8000/server' + image} alt="picture quiz" />
+  return <ImageStyle src={'/server' + image} alt="picture quiz" />
 }
 export default QuizImage

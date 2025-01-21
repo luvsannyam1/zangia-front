@@ -19,7 +19,6 @@ function App() {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <QuizProvider>
-        <Navbar />
         <Main />
       </QuizProvider>
     </ThemeProvider>
